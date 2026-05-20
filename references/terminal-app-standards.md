@@ -28,11 +28,11 @@ The interface should feel immediate, serious, operational, efficient, reliable, 
 
 ## Visual Style
 
-Use monospace typography, fixed-width layouts, terminal/TUI aesthetics, bordered panels, status bars, command bars, tabular data presentation, dense screen utilization, compact spacing, stable rendering, persistent navigation regions, and keyboard shortcut hints.
+Use monospace typography, fixed-width layouts, terminal/TUI aesthetics, bordered panels, heavy frames, status bars, command bars, tabular data presentation, dense screen utilization, compact spacing, stable rendering, persistent navigation regions, and keyboard shortcut hints.
 
 Avoid prompt-response interfaces, one-shot command output, floating cards, excessive padding, rounded modern SaaS styling, hidden controls, unpredictable layout movement, animation-heavy interfaces, scroll-jacking, and modal overload.
 
-Prefer dark blue, charcoal, black, muted grey, and optional terminal green accents.
+Draw from DOS Sage Line 100 and legacy accounting software: dense full-screen panels, high-contrast title bars, persistent status strips, bright inverse highlight bands, and visibly selected rows or fields. Prefer dark blue, charcoal, black, muted grey, and optional terminal green accents. Use ANSI color intentionally, and when padding or aligning colored content, measure visible string length rather than raw ANSI escape length so borders and columns stay aligned.
 
 ## Interaction Model
 
@@ -44,6 +44,7 @@ Core conventions:
 - `UP` / `DOWN`: highlight menu options, rows, and list items without activating them
 - `ENTER`: open the highlighted menu option, confirm a selection, or advance to the next input field
 - `ESC`: go back to the previous menu, close the active popup, cancel the current operation, or move to the previous field in data-entry contexts
+- number keys: jump directly to visible numbered menu options
 - function keys: primary workflows where supported
 - arrow keys: movement and navigation
 - incremental search everywhere
@@ -61,6 +62,7 @@ Each screen should have:
 
 - predictable layout
 - explicit focus management
+- a persistent top status strip with current operational metrics when the domain has meaningful counts, totals, alerts, queues, or session state
 - command mappings
 - status and footer regions
 - reusable structural patterns
@@ -70,6 +72,8 @@ Use a stable structure like:
 ```text
 +--------------------------------------------------+
 | HEADER                                           |
++--------------------------------------------------+
+| METRICS / OPERATIONAL STATUS                     |
 +--------------------------------------------------+
 | NAVIGATION | MAIN CONTENT                        |
 |            |                                     |
@@ -101,7 +105,7 @@ Expected widgets:
 
 - hierarchical menus with highlighted selection, `UP` / `DOWN` navigation, `ENTER` activation, accelerator keys, and breadcrumb or status context
 - multi-field input screens with labels, current-field highlighting, inline validation, rapid `ENTER`-to-next-field movement, and clear save/cancel commands
-- date fields that open a popup date picker with month navigation, day selection, cancel/back behavior, and focus trapped inside the popup until resolved
+- date fields that open a popup date picker defaulting to today, with arrow-key day/week movement, `PGUP` / `PGDN` month navigation, `ENTER` selection, `ESC` cancel/back behavior, and focus trapped inside the popup until resolved
 - lookup fields that open searchable popup lists or grids
 - confirmation, error, and selection dialogs that are keyboard navigable and visually distinct
 
@@ -136,6 +140,7 @@ Build reusable primitives around:
 - event-driven workflows
 - reusable form engine
 - reusable grid/table engine
+- reusable calendar/date picker
 - reusable keyboard router
 - reusable focus manager
 - reusable layout regions
@@ -200,6 +205,8 @@ Use:
 Typing should feel equivalent to a TypeScript codebase while preserving native JavaScript runtime performance and simplicity.
 
 Use tabs, never spaces, for indentation in generated JavaScript. Use US English spelling. Keep formatting highly consistent. Prefer readability over clever abstractions. Keep functions focused and composable.
+
+For interactive TUI flows, prefer raw keyboard input or the chosen TUI library's key events over `readline.question`. Centralize key parsing so menus, forms, grids, dialogs, and date pickers share consistent behavior.
 
 If the user asks for the style to match the `matthew-andrews/courting` repository and the repository is locally available or can be inspected with approval, use it as inspiration for architecture, file organization, naming, typing style, code clarity, and developer ergonomics. Do not blindly copy implementations.
 
@@ -293,7 +300,7 @@ The generated project must satisfy:
 npm test
 ```
 
-Include representative tests, edge-case coverage, validation tests, and CLI behavior tests where appropriate.
+Include representative tests, edge-case coverage, validation tests, and CLI behavior tests where appropriate. For interactive flows, include smoke tests that pipe key sequences through the app or exercise the input router directly for menu navigation, form entry, table selection, and calendar selection.
 
 ## Architecture Rules
 

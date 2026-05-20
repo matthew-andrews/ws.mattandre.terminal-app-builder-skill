@@ -26,6 +26,7 @@ Before implementation, read [terminal-app-standards.md](references/terminal-app-
 Build around explicit, reusable primitives:
 
 - command registry and command execution
+- raw keyboard input and centralized key parsing
 - keyboard routing
 - focus management
 - stable layout regions
@@ -33,6 +34,7 @@ Build around explicit, reusable primitives:
 - menu hierarchy and selection state
 - form and validation flow
 - grid/table navigation
+- calendar/date picker navigation
 - status and notification output
 - condition-specific domain error classes
 - clear module boundaries
@@ -62,22 +64,25 @@ Prioritize keyboard-first, dense, predictable operation:
 - `ENTER` opens the highlighted menu option, confirms a selection, or advances to the next input field depending on context
 - `ESC` goes back to the previous menu, closes the active popup, cancels the current operation, or moves to the previous field in data-entry contexts
 - deterministic `TAB` and `SHIFT+TAB` focus movement where tab-style navigation is appropriate
+- number keys jump directly to visible menu options when menus are numbered
 - `ENTER` for confirm or advance
 - arrow keys for movement
 - function keys for primary workflows when the chosen library and terminal environment support them
 - incremental search wherever records or command lists are navigated
-- stable layouts with header, navigation, main content, status, and command regions
+- stable layouts with header, navigation, main content, persistent operational status, and command regions
 - a persistent full-screen application frame rather than a prompt-response loop
 
 Treat common business controls as rich terminal widgets, not plain text prompts:
 
 - menus with highlighted selection, accelerator keys, nested screens, and breadcrumbs or status context
 - multi-field input screens with labels, validation messages, current-field highlighting, and rapid `ENTER`-to-next-field data entry
-- date fields that open a popup date picker with month navigation, day selection, cancel/back behavior, and clear focus trapping
+- date fields that open a popup date picker defaulting to today, with arrow-key day/week movement, `PGUP` / `PGDN` month navigation, `ENTER` selection, `ESC` cancel/back behavior, and clear focus trapping
 - lookup fields that open searchable popup lists or grids
 - confirmation, error, and selection dialogs that are keyboard navigable and visually distinct
 
 Make the active focus region visually obvious. Ensure focus never feels lost, especially inside dialogs or modal flows.
+
+Use a DOS Sage Line 100 / legacy ERP visual language: dense layouts, full-screen bordered panels, high-contrast title and status bars, heavy frames, bright inverse highlight bands for selected rows and focused fields, and intentional ANSI color. When padding or aligning colored text, calculate by visible string length rather than raw ANSI escape length so borders and columns remain aligned.
 
 ## Verification
 
