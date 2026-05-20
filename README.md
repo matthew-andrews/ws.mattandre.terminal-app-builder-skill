@@ -1,6 +1,8 @@
 # Terminal App Builder Skill
 
-Codex skill for generating production-quality local terminal applications with disciplined JavaScript, keyboard-first UX, tests, linting, and maintainable architecture.
+Codex skill for generating production-quality full-screen ANSI/TUI terminal applications with disciplined JavaScript, keyboard-first UX, tests, linting, and maintainable architecture.
+
+This skill is for apps that replace the interactive shell with a persistent menu-driven workspace, similar to DOS-era business software, Sage Line 50, AS/400 systems, Bloomberg Terminal, or airline reservation terminals. It is not intended to default to simple command tools that print output and exit.
 
 ## Install
 
@@ -55,15 +57,16 @@ Use $terminal-app-builder to create a local terminal app for managing warehouse 
 You can also describe the app in more detail:
 
 ```text
-Use $terminal-app-builder to create a keyboard-first terminal CRM for account managers. It should support customer search, account notes, task tracking, and a dense table view. Use pure JavaScript, npm scripts, tests, and linting.
+Use $terminal-app-builder to create a keyboard-first full-screen terminal CRM for account managers. It should support customer search, account notes, task tracking, menu navigation, and a dense table view. Use pure JavaScript, npm scripts, tests, and linting.
 ```
 
 The skill instructs Codex to produce a complete runnable project with:
 
-- local terminal-first runtime
+- local full-screen ANSI/TUI runtime
 - pure JavaScript with JSDoc typing
 - ECMAScript modules
 - keyboard-first workflows
+- persistent menus and stable screen regions
 - deterministic focus and command behavior
 - tests and linting
 - README setup instructions
@@ -78,10 +81,10 @@ Use $terminal-app-builder to create a simple local terminal todo app in a new fo
 
 Requirements:
 - Use pure JavaScript with ECMAScript modules and JSDoc types.
-- The app should run from the terminal with npm scripts.
+- The app should run from the terminal with npm scripts and open a full-screen ANSI/TUI workspace.
 - Support adding todos, listing todos, marking todos complete, deleting todos, and searching todos.
 - Store todos locally in a JSON file.
-- Provide a keyboard-first interactive mode with deterministic commands.
+- Provide a keyboard-first interactive menu system with deterministic commands.
 - Include useful CLI help text.
 - Include ESLint and a test suite.
 - Ensure npm test and npm run lint pass.
