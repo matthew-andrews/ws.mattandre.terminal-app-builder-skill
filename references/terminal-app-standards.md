@@ -194,22 +194,43 @@ Avoid excessive wrapper abstractions, overengineered API clients, and defensive 
 
 ## Error Handling
 
-Use explicit, intentional error handling. Expected business-domain failures should use dedicated error classes:
+Use explicit, intentional error handling. Anticipated business-domain failures should use dedicated error classes named for the condition, not a generic catchall error class:
 
 ```js
-class ExpectedError extends Error {}
+class UserInputError extends Error {}
+class NotFoundError extends Error {}
 
-function businessLogic() {
-	if (expectedErrorCondition) {
-		throw new ExpectedError('More details if necessary');
+function parseCustomerId(rawCustomerId) {
+	const customerId = Number.parseInt(rawCustomerId, 10);
+
+	if (!Number.isInteger(customerId) || customerId < 1) {
+		throw new UserInputError('Customer ID must be a positive integer.');
 	}
+
+	return customerId;
+}
+
+async function loadCustomer(customerId) {
+	const response = await fetch(`https://api.example.com/customers/${customerId}`);
+
+	if (response.status === 404) {
+		throw new NotFoundError(`Customer ${customerId} was not found.`);
+	}
+
+	if (!response.ok) {
+		throw new Error(`Customer lookup failed with ${response.status}.`);
+	}
+
+	return response.json();
 }
 
 try {
-	businessLogic();
+	const customerId = parseCustomerId(process.argv[2]);
+	await loadCustomer(customerId);
 } catch (err) {
-	if (err instanceof ExpectedError) {
-		// expected error handling
+	if (err instanceof UserInputError || err instanceof NotFoundError) {
+		console.error(err.message);
+		process.exitCode = 1;
 	} else {
 		throw err;
 	}
@@ -218,7 +239,9 @@ try {
 
 Rules:
 
-- model expected failures explicitly
+- model anticipated failures explicitly with descriptive classes such as `UserInputError`, `NotFoundError`, `ConflictError`, `ValidationError`, or other names that match the actual domain condition
+- use `UserInputError` for invalid user-provided arguments, flags, form values, or commands, and tell the user what is wrong with the input
+- use condition-specific operational errors for anticipated external outcomes, such as `NotFoundError` for a 404 where the requested resource genuinely does not exist
 - let unexpected failures crash loudly
 - avoid silent recovery
 - avoid catch-all suppression

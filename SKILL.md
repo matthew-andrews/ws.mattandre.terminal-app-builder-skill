@@ -30,7 +30,7 @@ Build around explicit, reusable primitives:
 - form and validation flow
 - grid/table navigation
 - status and notification output
-- expected domain error classes
+- condition-specific domain error classes
 - clear module boundaries
 
 Keep state transitions explicit and deterministic. Treat performance, startup speed, and immediate keyboard response as core UX requirements.
@@ -46,7 +46,7 @@ Every generated app must include:
 - Vitest, Node.js test runner, or another appropriate test runner
 - representative tests for domain logic, validation, and CLI/TUI behavior
 - README with setup, run, development, and verification commands
-- useful error messages and intentional handling of expected failures
+- useful error messages and intentional handling of anticipated failures
 
 Use tabs for indentation in generated JavaScript and project files where indentation is relevant. Use US English spelling.
 
