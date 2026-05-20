@@ -2,9 +2,11 @@
 
 ## Purpose
 
-Generate complete, fully working, production-quality applications that run locally from the terminal with minimal setup.
+Generate complete, fully working, production-quality full-screen ANSI/TUI applications that run locally from the terminal with minimal setup.
 
-Build keyboard-first terminal-native enterprise applications inspired by legacy ERP/accounting systems such as Sage Line 100, AS/400 business systems, Bloomberg Terminal, airline reservation systems, and DOS-era operational software. The goal is to recreate speed, density, operator efficiency, predictability, and low-cognitive-load workflows using modern engineering practices.
+Build keyboard-first terminal-native enterprise applications inspired by legacy ERP/accounting systems such as Sage Line 50 and Sage Line 100, AS/400 business systems, Bloomberg Terminal, airline reservation systems, and DOS-era operational software. The goal is to recreate speed, density, operator efficiency, predictability, and low-cognitive-load workflows using modern engineering practices.
+
+The app should replace the interactive shell prompt with a persistent workspace. It should feel like a full-screen menu-driven business system, not a command tool where the user repeatedly runs flags and subcommands from the shell.
 
 ## Product And UX Philosophy
 
@@ -28,24 +30,25 @@ The interface should feel immediate, serious, operational, efficient, reliable, 
 
 Use monospace typography, fixed-width layouts, terminal/TUI aesthetics, bordered panels, status bars, command bars, tabular data presentation, dense screen utilization, compact spacing, stable rendering, persistent navigation regions, and keyboard shortcut hints.
 
-Avoid floating cards, excessive padding, rounded modern SaaS styling, hidden controls, unpredictable layout movement, animation-heavy interfaces, scroll-jacking, and modal overload.
+Avoid prompt-response interfaces, one-shot command output, floating cards, excessive padding, rounded modern SaaS styling, hidden controls, unpredictable layout movement, animation-heavy interfaces, scroll-jacking, and modal overload.
 
 Prefer dark blue, charcoal, black, muted grey, and optional terminal green accents.
 
 ## Interaction Model
 
-The entire system must be keyboard-first. The mouse is optional.
+The entire system must be keyboard-first. The mouse is optional. The user should remain inside a full-screen ANSI/TUI session for normal work.
 
 Core conventions:
 
 - `TAB` / `SHIFT+TAB`: deterministic field navigation
-- `ENTER`: confirm or advance
-- `ESC`: cancel or back
+- `UP` / `DOWN`: highlight menu options, rows, and list items without activating them
+- `ENTER`: open the highlighted menu option, confirm a selection, or advance to the next input field
+- `ESC`: go back to the previous menu, close the active popup, cancel the current operation, or move to the previous field in data-entry contexts
 - function keys: primary workflows where supported
 - arrow keys: movement and navigation
 - incremental search everywhere
 - search-first workflows
-- command-oriented navigation
+- menu-oriented and command-palette navigation
 - immediate keystroke response
 
 Every workflow must be operable entirely from the keyboard.
@@ -90,6 +93,20 @@ Focus behavior is critical:
 
 Expert users should develop muscle memory.
 
+## Professional Widgets
+
+Do not reduce the app to plain text prompts. Build professional terminal widgets that behave like established business software.
+
+Expected widgets:
+
+- hierarchical menus with highlighted selection, `UP` / `DOWN` navigation, `ENTER` activation, accelerator keys, and breadcrumb or status context
+- multi-field input screens with labels, current-field highlighting, inline validation, rapid `ENTER`-to-next-field movement, and clear save/cancel commands
+- date fields that open a popup date picker with month navigation, day selection, cancel/back behavior, and focus trapped inside the popup until resolved
+- lookup fields that open searchable popup lists or grids
+- confirmation, error, and selection dialogs that are keyboard navigable and visually distinct
+
+Every popup must have deterministic keyboard behavior, visible focus, and an obvious return path to the previous screen.
+
 ## Data Density
 
 Favor visible rows, visible context, visible metadata, compact tables, split panes, and side-by-side information.
@@ -127,9 +144,11 @@ Build reusable primitives around:
 
 Favor composability, modularity, predictable state transitions, explicit actions, and reusable workflow patterns.
 
-## Command Model
+## Menu And Command Model
 
-Support command-oriented interaction. Example commands:
+Support menu-driven interaction first. Menus should be visible, hierarchical, keyboard navigable, and fast enough for expert operators to memorize. Use function keys, command bars, single-key accelerators, and search to avoid forcing users through deep menu paths.
+
+Also support command-oriented interaction inside the full-screen app through a command palette or command entry region. Example internal commands:
 
 ```text
 customer.open 100245
@@ -139,7 +158,7 @@ stock.adjust
 report.run aging
 ```
 
-Commands should be composable, executable from the keyboard, executable from a palette, automation-ready, and compatible with future AI interpretation.
+Commands should be composable, executable from the keyboard, executable from a palette, automation-ready, and compatible with future AI interpretation. They should not require returning to the shell for normal workflows.
 
 ## Table And Grid Behavior
 
@@ -284,16 +303,16 @@ Avoid unnecessary frameworks, premature abstraction, excessive dependency count,
 
 Do not include database implementation details unless explicitly requested.
 
-## CLI And Terminal Standards
+## Launch And Terminal Standards
 
-Provide intuitive commands, clear help text, predictable flags and options, useful error messages, and keyboard-driven workflows.
+Provide a minimal launch command and clear help text, but make the primary runtime a full-screen TUI. Flags and subcommands may configure startup, import/export data, or run explicit automation tasks; they must not be the main product experience unless the user specifically requested a simple CLI.
 
 Preferred libraries when needed:
 
-- Commander
-- Chalk
-- Ink
 - Blessed
+- Ink
+- Chalk
+- Commander for launch commands and explicitly requested simple CLIs
 
 Use native Node.js APIs when they are sufficient.
 
