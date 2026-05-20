@@ -1,0 +1,4 @@
+interface:
+  display_name: "Terminal App Builder"
+  short_description: "Build disciplined local terminal apps"
+  default_prompt: "Use $terminal-app-builder to create a production-quality local terminal application."
